@@ -1,0 +1,20 @@
+{
+  "name": "resume-builder",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A zero-dependency Chinese resume builder with 7 templates, true A4 pagination, multi-resume management and PDF export.",
+  "scripts": {
+    "dev": "node scripts/serve.js",
+    "dev:py": "py -m http.server 8765 --bind 127.0.0.1",
+    "test": "node scripts/smoke-test.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "resume",
+    "cv",
+    "static-site"
+  ],
+  "license": "MIT"
+}

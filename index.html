@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="免费的中文在线简历制作工具：9 套精美模板、真实 A4 分页预览、智能一页、多份简历管理，一键导出 PDF。数据只保存在本机。">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="简历助手 · 在线制作中文简历">
+  <meta property="og:description" content="精美模板、所见即所得的 A4 分页预览，一键导出 PDF。">
+  <meta property="og:type" content="website">
+  <title>简历助手 · 在线制作中文简历</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Crect x='9' y='7' width='14' height='18' rx='2' fill='%23fff'/%3E%3Crect x='12' y='11' width='8' height='2' rx='1' fill='%232563eb'/%3E%3Crect x='12' y='15' width='8' height='1.6' rx='.8' fill='%2393b4f5'/%3E%3Crect x='12' y='18.5' width='6' height='1.6' rx='.8' fill='%2393b4f5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/resume.css" id="resume-css">
+</head>
+<body data-view="editor">
+  <div class="app" id="app">
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand" aria-label="简历助手">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="currentColor"/><rect x="9" y="7" width="14" height="18" rx="2" fill="#fff"/><rect x="12" y="11" width="8" height="2" rx="1" fill="currentColor"/><rect x="12" y="15" width="8" height="1.6" rx=".8" fill="currentColor" opacity=".45"/><rect x="12" y="18.5" width="6" height="1.6" rx=".8" fill="currentColor" opacity=".45"/></svg></span>
+          <span class="brand-name">简历助手</span>
+        </div>
+        <span class="topbar-sep" aria-hidden="true"></span>
+        <button type="button" class="doc-switch" id="doc-switch" title="切换或管理我的简历">
+          <span data-icon="files"></span>
+          <span class="doc-title" id="doc-title">简历</span>
+          <span class="doc-caret" data-icon="chevronDown"></span>
+        </button>
+        <button type="button" class="save-state" id="save-state" aria-live="polite"></button>
+      </div>
+      <div class="topbar-right">
+        <button type="button" class="icon-btn" id="btn-undo" title="撤销（Ctrl+Z）" aria-label="撤销"><span data-icon="undo"></span></button>
+        <button type="button" class="icon-btn" id="btn-redo" title="重做（Ctrl+Shift+Z）" aria-label="重做"><span data-icon="redo"></span></button>
+        <span class="topbar-sep" aria-hidden="true"></span>
+        <button type="button" class="btn btn-ghost" id="btn-export" aria-haspopup="menu" aria-label="导出"><span data-icon="download"></span><span class="btn-label">导出</span></button>
+        <button type="button" class="btn btn-primary" id="btn-pdf"><span data-icon="printer"></span><span>下载 PDF</span></button>
+        <button type="button" class="icon-btn" id="btn-more" title="更多" aria-label="更多" aria-haspopup="menu"><span data-icon="menu"></span></button>
+      </div>
+    </header>
+
+    <div class="workspace" id="workspace">
+      <!-- 左侧：编辑面板 -->
+      <aside class="panel" id="panel" aria-label="编辑面板">
+        <div class="panel-tabs" role="tablist">
+          <button type="button" class="panel-tab is-active" role="tab" data-tab="content" aria-selected="true" aria-controls="panel-content"><span data-icon="edit"></span>内容</button>
+          <button type="button" class="panel-tab" role="tab" data-tab="design" aria-selected="false" aria-controls="panel-design"><span data-icon="palette"></span>模板与排版</button>
+        </div>
+        <div class="panel-scroll" id="panel-content" role="tabpanel"></div>
+        <div class="panel-scroll" id="panel-design" role="tabpanel" hidden></div>
+      </aside>
+
+      <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" title="拖动调整宽度，双击恢复"></div>
+
+      <!-- 右侧：A4 分页预览 -->
+      <main class="viewer" id="viewer" aria-label="简历预览">
+        <div class="viewer-bar">
+          <div class="viewer-info">
+            <span class="page-count" id="page-count"></span>
+            <button type="button" class="page-hint" id="page-hint" hidden></button>
+          </div>
+          <div class="zoom" role="group" aria-label="缩放">
+            <button type="button" class="icon-btn sm" id="zoom-out" title="缩小" aria-label="缩小"><span data-icon="zoomOut"></span></button>
+            <button type="button" class="zoom-label" id="zoom-label" title="切换 100% / 适应宽度">100%</button>
+            <button type="button" class="icon-btn sm" id="zoom-in" title="放大" aria-label="放大"><span data-icon="zoomIn"></span></button>
+            <button type="button" class="icon-btn sm" id="zoom-fit" title="适应宽度" aria-label="适应宽度"><span data-icon="fit"></span></button>
+          </div>
+        </div>
+        <div class="viewer-scroll" id="viewer-scroll">
+          <div class="viewer-canvas" id="viewer-canvas">
+            <div class="viewer-scale" id="viewer-scale"></div>
+          </div>
+          <p class="viewer-tip">点击简历中的内容可快速跳转编辑</p>
+        </div>
+      </main>
+    </div>
+
+    <!-- 移动端底部导航 -->
+    <nav class="mobile-nav" aria-label="视图切换">
+      <button type="button" data-view="editor" class="is-active"><span data-icon="edit"></span>编辑</button>
+      <button type="button" data-view="preview"><span data-icon="file"></span>预览</button>
+      <button type="button" id="m-pdf" class="is-primary"><span data-icon="printer"></span>PDF</button>
+    </nav>
+  </div>
+
+  <div id="print-root" class="print-root" aria-hidden="true"></div>
+  <div id="overlay-root"></div>
+  <input type="file" id="file-import" accept=".json,.html,.htm,application/json,text/html" hidden>
+  <input type="file" id="file-avatar" accept="image/*" hidden>
+
+  <noscript><p class="noscript">简历助手需要启用 JavaScript 才能运行。</p></noscript>
+
+  <script src="js/core/util.js"></script>
+  <script src="js/core/icons.js"></script>
+  <script src="js/core/schema.js"></script>
+  <script src="js/core/markup.js"></script>
+  <script src="js/core/store.js"></script>
+  <script src="js/render/templates.js"></script>
+  <script src="js/render/paginate.js"></script>
+  <script src="js/render/preview.js"></script>
+  <script src="js/ui/components.js"></script>
+  <script src="js/ui/editor.js"></script>
+  <script src="js/ui/design.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
